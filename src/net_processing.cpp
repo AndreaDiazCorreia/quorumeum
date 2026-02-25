@@ -3835,13 +3835,8 @@ void PeerManagerImpl::ProcessMessage(CNode& pfrom, const std::string& msg_type, 
     if (msg_type == NetMsgType::SIGNETPSBT) {
         PartiallySignedTransaction psbt;
         CBlock block;
-        try {
-            vRecv >> psbt;
-            vRecv >> TX_WITH_WITNESS(block);
-        } catch (const std::exception& e) {
-            LogDebug(BCLog::NET, "Invalid signetpsbt from peer=%d: %s\n", pfrom.GetId(), e.what());
-            return;
-        }
+        vRecv >> psbt;
+        vRecv >> TX_WITH_WITNESS(block);
         LogPrintf("Received signetpsbt from peer=%d prevhash=%s\n", pfrom.GetId(), block.hashPrevBlock.ToString());
         return;
     }
